@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI-powered spam and phishing detector with explainability. Paste any message or URL to instantly check if it's spam." />
+  <title>SpamShield AI — Explainable Spam & Phishing Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+
+  <!-- ========== BACKGROUND PARTICLES ========== -->
+  <div class="bg-particles" aria-hidden="true">
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-icon">🛡️</span>
+      <span class="logo-text">SpamShield <span class="logo-accent">AI</span></span>
+    </div>
+    <div class="header-badge">Powered by ML</div>
+  </header>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="main-container">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1 class="hero-title">
+        Detect Spam &amp; Phishing
+        <span class="hero-highlight">Instantly</span>
+      </h1>
+      <p class="hero-subtitle">
+        Paste any message or URL below. Our AI will analyze it and explain
+        <em>exactly why</em> it's suspicious — in plain English.
+      </p>
+    </section>
+
+    <!-- ========== INPUT CARD ========== -->
+    <div class="card input-card">
+      <label for="message-input" class="card-label">
+        📩 Paste your message or URL
+      </label>
+
+      <textarea
+        id="message-input"
+        class="message-textarea"
+        placeholder="e.g. "Congratulations! You've won a FREE iPhone. Click now to claim your prize!""
+        rows="5"
+        aria-label="Message or URL to analyze"
+      ></textarea>
+
+      <!-- Character counter -->
+      <div class="textarea-footer">
+        <span class="char-counter" id="char-counter">0 / 500</span>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="btn-group">
+        <button id="check-btn" class="btn btn-primary" onclick="analyzeMessage()">
+          <span class="btn-icon">🔍</span>
+          <span class="btn-text">Analyze Message</span>
+          <span class="btn-loader hidden" id="btn-loader">⏳</span>
+        </button>
+        <button class="btn btn-secondary" onclick="clearAll()">
+          ✖ Clear
+        </button>
+      </div>
+
+      <!-- Quick example buttons -->
+      <div class="examples-row">
+        <span class="examples-label">Try an example:</span>
+        <button class="example-tag example-spam" onclick="loadExample('spam')">🚨 Spam sample</button>
+        <button class="example-tag example-ham"  onclick="loadExample('ham')">✅ Safe sample</button>
+        <button class="example-tag example-phish" onclick="loadExample('phish')">🔗 Phishing URL</button>
+      </div>
+    </div>
+
+    <!-- ========== RESULT CARD (hidden until result arrives) ========== -->
+    <div class="card result-card hidden" id="result-card" aria-live="polite">
+
+      <!-- Verdict banner -->
+      <div class="verdict-banner" id="verdict-banner">
+        <div class="verdict-icon" id="verdict-icon">🤖</div>
+        <div class="verdict-text">
+          <div class="verdict-label" id="verdict-label">Analyzing…</div>
+          <div class="verdict-sub"  id="verdict-sub">Please wait</div>
+        </div>
+      </div>
+
+      <!-- Confidence meter -->
+      <div class="confidence-section">
+        <div class="confidence-header">
+          <span>Confidence Score</span>
+          <span class="confidence-value" id="confidence-value">—</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Scammer Intent Detection (only shows for spam) -->
+      <div class="intent-section hidden" id="intent-section">
+        <div class="intent-header">
+          <div class="intent-header-icon">🎯</div>
+          <div class="intent-header-text">
+            <h3>Scammer's Goal Detected</h3>
+            <p>What the attacker is trying to achieve</p>
+          </div>
+        </div>
+        <div class="intent-list" id="intent-list"></div>
+      </div>
+
+      <!-- Highlighted message preview -->
+      <div class="highlight-section">
+        <div class="section-title">📝 Message Analysis (suspicious words highlighted)</div>
+        <div class="highlighted-text" id="highlighted-text"></div>
+      </div>
+
+      <!-- Explanation list -->
+      <div class="explanation-section" id="explanation-section">
+        <div class="section-title">🔎 Why is this flagged?</div>
+        <ul class="explanation-list" id="explanation-list"></ul>
+      </div>
+
+      <!-- Suspicious words chips -->
+      <div class="chips-section" id="chips-section">
+        <div class="section-title">🏷️ Suspicious Words Found</div>
+        <div class="chips-container" id="chips-container"></div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer">
+    <p>SpamShield AI · Built with Flask + Scikit-learn · For educational &amp; hackathon use</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
